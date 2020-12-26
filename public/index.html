@@ -4,24 +4,50 @@
 <head>
     <title>Thirukkural Image Share</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Mukta+Malar:wght@600&display=swap');
     </style>
 
 </head>
 
+
 <body>
-    <input id="kural_no_txt" type="number" /> <br>
-    <input type="button" value="get" onclick="fill_kural()" /> <br>
-    <canvas id="canva" height="900" width="1330" style="max-width:800px ;"></canvas>
-    <br>
-    <input type="button" value="SHARE" onclick = "share()">
-    <img src="./thiruvalluvar.png" id="image" style="display: none;">
-    <img src="./olai2.png" id="olai_image" style="display: none;">
+    <center>
+        <input id="kural_no_txt" placeholder="Enter Kural No." type="number"
+            onchange="fill_kural(parseInt(kural_no_txt.value)-1)" />
+        <br>
+        OR
+        <br>
+        <div class="dropdown">
+            <input placeholder="Search ..." oninput="search_input()" type="text" id="search_txt"
+                data-bs-toggle="dropdown">
+            <ul class="dropdown-menu" id="search_list" style="max-height: 300px; max-width: 250px; overflow: auto;">
+
+            </ul>
+        </div>
+        <br>
+
+        <canvas id="canva" height="900" width="1330" style="max-width:800px; width: 100%;"></canvas>
+        <br>
+        <input id="share_btn" type="button" value="SHARE" onclick="share()">
+        <input type="button" value="DOWNLOAD" onclick="download()">
+        <img src="./thiruvalluvar.png" id="image" style="display: none;">
+        <img src="./olai2.png" id="olai_image" style="display: none;">
+    </center>
 </body>
 <script src="./thirukkural.js"></script>
+
 <script>
 
+    if (!navigator.share) {
+        share_btn.style.display = 'none';
+    }
 
     var sect_tam = ["அறத்துப்பால்", "பொருட்பால்", "காமத்துப்பால்"];
 
@@ -37,23 +63,26 @@
 
     var ctx = document.getElementById("canva").getContext('2d');
 
+    var cur_kural;
+
     pre_fill();
-    setTimeout(fill_kural, 1000);
+    setTimeout(fill_kural(parseInt(Math.random() * 1330 + 1)), 1000);
 
     function pre_fill() {
-        
+
         ctx.font = "bold 25px Mukta Malar";
         ctx.fillStyle = "white"
         ctx.fillText("தமிழ் திருக்குறள் ", 0, 100);
 
     }
 
-    function fill_kural() {
+    function fill_kural(n) {
 
-        var n = (parseInt(kural_no_txt.value) - 1) || 0;
+        cur_kural = n;
+
         canva.width = 1330
         canva.height = 900
-        
+
         ctx.clearRect(0, 0, canva.width, canva.height);
 
         var grd = ctx.createRadialGradient(100, 80, 5, 100, 80, 1300);
@@ -63,7 +92,7 @@
         grd.addColorStop(0.3, "white");
         grd.addColorStop(1, "yellow");
         ctx.fillStyle = grd;
-        
+
         ctx.fillRect(0, 0, canva.width, canva.height);
 
         ctx.drawImage(document.getElementById("image"), 0, 50)
@@ -91,14 +120,14 @@
         var l1_w = 915;
         ctx.drawImage(document.getElementById("olai_image"), left, k1 + 30, l1_w + 160, m2 - k1 + 80);
 
-        
+
         ctx.strokeStyle = "red";
-        ctx.strokeText(l1, left + 110, m1,900)
-        ctx.strokeText(l2, left + 110, m2,900)
+        ctx.strokeText(l1, left + 110, m1, 900)
+        ctx.strokeText(l2, left + 110, m2, 900)
 
         ctx.fillStyle = "#314bce"
-        ctx.fillText(l1, left + 110, m1,900)
-        ctx.fillText(l2, left + 110, m2,900)
+        ctx.fillText(l1, left + 110, m1, 900)
+        ctx.fillText(l2, left + 110, m2, 900)
 
         var tam_exp = tk.kural[n].tam_exp;
         var tam_exp_word = tam_exp.split(" ");
@@ -110,7 +139,7 @@
         tam_exp_word.forEach((e, ind) => {
             var cur_line = (tam_exp_line[i] || "") + e + " ";
 
-            if (ctx.measureText(cur_line).width >1200) {
+            if (ctx.measureText(cur_line).width > 1200) {
                 tam_exp_line[i + 1] = e + " ";
                 i++;
 
@@ -127,36 +156,82 @@
             ctx.fillText(e, 50, j);
         })
 
-        var data = ctx.getImageData(0,0,canva.width,canva.height);
+        var data = ctx.getImageData(0, 0, canva.width, canva.height);
         canva.height = j + 100;
 
-        ctx.putImageData(data,0,0);
+        ctx.putImageData(data, 0, 0);
 
         ctx.fillStyle = "black";
-        ctx.fillRect(0,canva.height-40,canva.width,40);
+        ctx.fillRect(0, canva.height - 40, canva.width, 40);
 
-        ctx.fillStyle="white"
+        ctx.fillStyle = "white"
         ctx.font = "30px Arial"
-        ctx.textAlign="center";
-        ctx.fillText("share-kural.web.app",canva.width/2,canva.height-10)
+        ctx.textAlign = "center";
+        ctx.fillText("share-kural.web.app", canva.width / 2, canva.height - 10)
         ctx.strokeStyle = "red";
         ctx.lineWidth = 10;
-        ctx.strokeRect(0,0,canva.width,canva.height);   
+        ctx.strokeRect(0, 0, canva.width, canva.height);
 
 
     }
 
-    function share(){
+    function share() {
 
-        var blob = canva.toBlob((blob)=>{
+        var blob = canva.toBlob((blob) => {
             navigator.share({
-                files:[new File([blob],"kural-"+kural_no_txt.value+".png",{type:blob.type})],
-                text:"share-kural.web.app",
-                title:'Share-Kural'
+                files: [new File([blob], "kural-" + kural_no_txt.value + ".png", { type: blob.type })],
+                text: "share-kural.web.app",
+                title: 'Share-Kural'
             }
             )
         })
     }
+
+
+    function download() {
+
+        const a = document.createElement('a');
+        a.href = canva.toDataURL("image/png");
+        a.download = "kural-" + cur_kural + ".png";
+
+        const clickHandler = () => {
+            setTimeout(() => {
+                this.removeEventListener('click', clickHandler);
+            }, 150);
+        };
+        a.addEventListener('click', clickHandler, false);
+        a.click();
+
+    }
+
+    function search_input() {
+
+        var search = search_txt.value.toLowerCase();
+        if (!search) {
+            search_list.innerHTML = "";
+            return;
+        }
+        //var kural_filter = tk.kural.filter((e, i) => e.line1.indexOf(search) > -1 || e.line2.indexOf(search) > -1 || e.translit.toLowerCase().indexOf(search) > -1);
+
+        var kural_filter = [];
+        var kural_filter_i = [];
+        tk.kural.forEach((e, i) => {
+            if (e.line1.indexOf(search) > -1 || e.line2.indexOf(search) > -1 || e.translit.toLowerCase().indexOf(search) > -1) {
+                var splt = e.line1.split(" ");
+                kural_filter.push(splt[0] + splt[1] + "...");
+                kural_filter_i.push(i);
+            }
+        })
+
+        var inn_htm = "";
+
+        kural_filter.forEach((e, i) => {
+            inn_htm += `<li><a class="dropdown-item" href="#" onclick=fill_kural(${kural_filter_i[i]})>${e}</a></li>`
+        })
+
+        search_list.innerHTML = inn_htm;
+    }
+
 
 
 </script>
