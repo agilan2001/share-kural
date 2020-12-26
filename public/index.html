@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Thirukkural Image Share</title>
+    <title>Share Kural</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
@@ -12,6 +12,60 @@
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Mukta+Malar:wght@600&display=swap');
+
+        body {
+            background: linear-gradient(90deg, green, lightgreen 50%, green);
+        }
+
+        .h1_share,
+        .h1_kural {
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+
+        .h1_kural {
+            color: blue;
+        }
+
+        .h1_share {
+            color: red;
+        }
+
+        #kural_no_txt {
+            text-align: center;
+            font-size: 1.5em;
+            width: 6ch;
+            border: 2px solid blue;
+        }
+
+        #search_txt {
+            border: 2px solid red;
+        }
+
+        #kural_no_txt,
+        #search_txt {
+            border-radius: 5px;
+        }
+
+        #kural_no_txt::placeholder {
+            font-size: 15px;
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        #canva {
+            max-width: 800px;
+            width: 95%;
+
+        }
     </style>
 
 </head>
@@ -19,13 +73,14 @@
 
 <body>
     <center>
-        <input id="kural_no_txt" placeholder="Enter Kural No." type="number"
-            onchange="fill_kural(parseInt(kural_no_txt.value)-1)" />
+        <div style="margin:10px"><span class="h1_share">Share</span> <span class="h1_kural">குறள்</span> </div>
+        <input id="kural_no_txt" placeholder="Kural No." type="number"
+            onchange="if((q = (parseInt(kural_no_txt.value)-1))>=0 && q<1330) fill_kural(q)" />
         <br>
         OR
         <br>
         <div class="dropdown">
-            <input placeholder="Search ..." oninput="search_input()" type="text" id="search_txt"
+            <input placeholder="Search..." oninput="search_input()" type="text" id="search_txt"
                 data-bs-toggle="dropdown">
             <ul class="dropdown-menu" id="search_list" style="max-height: 300px; max-width: 250px; overflow: auto;">
 
@@ -33,21 +88,24 @@
         </div>
         <br>
 
-        <canvas id="canva" height="900" width="1330" style="max-width:800px; width: 100%;"></canvas>
+        <canvas id="canva" height="900" width="1330"></canvas>
         <br>
-        <input id="share_btn" type="button" value="SHARE" onclick="share()">
-        <input type="button" value="DOWNLOAD" onclick="download()">
-        <img src="./thiruvalluvar.png" id="image" style="display: none;">
-        <img src="./olai2.png" id="olai_image" style="display: none;">
+        <input style="margin:10px; display: block;" class="btn btn-primary" id="share_btn" type="button"
+            value="SHARE IMAGE" onclick="share()">
+        <input style="margin:10px; display: block;" class="btn btn-warning" type="button" value="DOWNLOAD IMAGE"
+            onclick="download()">
+        <input style="margin:10px; display: block;" class="btn btn-info" id="share_lnk_btn" type="button"
+            value="SHARE LINK" onclick="share_lnk()">
+        <img src="thiruvalluvar.png" id="image" style="display: none;">
+        <img src="olai2.png" id="olai_image" style="display: none;">
+        <input type="text" id="copy" style="display: none;">
     </center>
 </body>
 <script src="./thirukkural.js"></script>
 
 <script>
 
-    if (!navigator.share) {
-        share_btn.style.display = 'none';
-    }
+    var ctx = document.getElementById("canva").getContext('2d');
 
     var sect_tam = ["அறத்துப்பால்", "பொருட்பால்", "காமத்துப்பால்"];
 
@@ -61,12 +119,19 @@
 
     var chap_eng = ["The Praise of God", "The Blessing of Rain", "The Greatness of Ascetics", "Assertion of the Strength of Virtue", "Domestic Life", "The Worth of a Wife", "The Wealth of Children", "The Possession of Love", "Hospitality", "The Utterance of Pleasant Words", "Gratitude", "Impartiality", "The Possession of Self-restraint", "The Possession of Decorum", "Not coveting another's Wife", "The Possession of Patience", " Forbearance", "Not Envying", "Not Coveting", "Not Backbiting", "Against Vain Speaking", "Dread of Evil Deeds", "Duty to Society", "Giving", "Renown", "Compassion", "Abstinence from Flesh", "Penance", "Imposture", "The Absence of Fraud", "Veracity", "Restraining Anger", "Not doing Evil", "Not killing", "Instability", "Renunciation", "Truth-Conciousness", "Curbing of Desire", "Fate", "The Greatness of a King", "Learning", "Ignorance", "Hearing", "The Possession of Knowledge", "The Correction of Faults", "Seeking the Aid of Great Men", "Avoiding mean Associations", "Acting after due Consideration", "The Knowledge of Power", "Knowing the fitting Time", "Knowing the Place", "Selection and Confidence", "Selection and Employment", "Cherishing Kinsmen", "Unforgetfulness", "The Right Sceptre", "The Cruel Sceptre", "Absence of Terrorism", "Benignity", "Detectives", "Energy", "Unsluggishness", "Manly Effort", "Hopefulness in Trouble", "The Office of Minister of state", "Power of Speech", "Purity in Action", "Power in Action", "Modes of Action", "The Envoy", "Conduct in the Presence of the King", "The Knowledge of Indications", "The Knowledge of the Council Chamber", "Not to dread the Council", "The Land", "The Fortification", "Way of Accumulating Wealth", "The Excellence of an Army", "Military Spirit", "Friendship", "Investigation in forming Friendships", "Familiarity", "Evil Friendship", "Unreal Friendship", "Folly", "Ignorance", "Hostility", "The Might of Hatred", "Knowing the Quality of Hate", "Enmity within", "Not Offending the Great", "Being led by Women", "Wanton Women", "Not Drinking Palm-Wine", "Gambling", "Medicine", "Nobility", "Honour", "Greatness", "Perfectness", "Courtesy", "Wealth without Benefaction", "Shame", "The Way of Maintaining the Family", "Farming", "Poverty", "Mendicancy", "The Dread of Mendicancy", "Baseness", "The Pre-marital love", "Recognition of the Signs ", "Rejoicing in the Embrace", "The Praise of her Beauty", "Declaration of Love's special Excellence", "The Abandonment of Reserve", "The Announcement of the Rumour", "Separation unendurable", "Complainings", "Eyes consumed with Grief", "The Pallid Hue", "The Solitary Anguish", "Sad Memories", "The Visions of the Night", "Lamentations at Eventide", "Wasting Away", "Soliloquy", "Reserve Overcome", "Mutual Desire", "The Reading of the Signs", "Desire for Reunion", "Expostulation with Oneself", "Pouting", "Feigned Anger", "The Pleasures of Temporary Variance"]
 
-    var ctx = document.getElementById("canva").getContext('2d');
-
     var cur_kural;
 
+
+    var url = new URLSearchParams(location.search);
+
+    if (!navigator.share) {
+        share_btn.style.display = 'none';
+    }
+
+
     pre_fill();
-    setTimeout(fill_kural(parseInt(Math.random() * 1330 + 1)), 1000);
+    var kur_share = parseInt(url.get("kural")) - 1;
+    setTimeout(fill_kural, 1000, [kur_share >= 0 && kur_share < 1330 ? kur_share : parseInt(Math.random() * 1330 + 1)]);
 
     function pre_fill() {
 
@@ -78,7 +143,9 @@
 
     function fill_kural(n) {
 
-        cur_kural = n;
+        cur_kural = parseInt(n) + 1;
+
+        kural_no_txt.value = cur_kural;
 
         canva.width = 1330
         canva.height = 900
@@ -104,7 +171,8 @@
         ctx.textAlign = "left"
         var k1_txt = "அதிகாரம் : " + chap_tam[parseInt(n / 10)];
         var k1 = ctx.measureText(k1_txt).fontBoundingBoxAscent + 30;
-        ctx.fillText(k1_txt, left + 10, k1);
+
+        ctx.fillText(k1_txt, left + 10, k1, 700);
 
         var k2_txt = "குறள் எண் : " + (parseInt(n) + 1);
         var k2 = ctx.measureText(k2_txt).width;
@@ -180,7 +248,7 @@
         var blob = canva.toBlob((blob) => {
             navigator.share({
                 files: [new File([blob], "kural-" + kural_no_txt.value + ".png", { type: blob.type })],
-                text: "share-kural.web.app",
+                text: "https://share-kural.web.app/?kural=" + cur_kural,
                 title: 'Share-Kural'
             }
             )
@@ -230,6 +298,30 @@
         })
 
         search_list.innerHTML = inn_htm;
+    }
+
+    function share_lnk() {
+
+        if (navigator.share) {
+            navigator.share({
+                title: 'Share-Kural',
+                url: "https://share-kural.web.app/?kural=" + cur_kural
+            })
+            return;
+        }
+
+        if (navigator.clipboard)
+            navigator.clipboard.writeText("https://share-kural.web.app/?kural=" + cur_kural).then(alert("URL Copied to Clipboard"));
+        else {
+            var copyText = document.getElementById("copy");
+            copyText.value = "https://share-kural.web.app/?kural=" + cur_kural;
+            copyText.select();
+            copyText.setSelectionRange(0, 50)
+            document.execCommand("copy");
+            alert("URL Copied to Clipboard");
+            share_lnk_btn.focus();
+        }
+
     }
 
 
