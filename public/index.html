@@ -17,6 +17,33 @@
             background: linear-gradient(90deg, green, lightgreen 50%, green);
         }
 
+        #info {
+            color: white;
+            font-size: 20px;
+            align-items: center;
+            justify-content: center;
+            background: darkred;
+            padding: 0 5px;
+            position: sticky;
+            top: 0;
+            width: 100%;
+        }
+
+        #dev_name {
+            color: greenyellow;
+            margin: 10px;
+            font-weight: bold;
+        }
+
+        #info img {
+            height: 20px;
+            margin: 5px;
+        }
+
+        #info img:hover {
+            box-shadow: 2px 2px white;
+        }
+
         .h1_share,
         .h1_kural {
             font-size: 2.5em;
@@ -61,10 +88,29 @@
             -moz-appearance: textfield;
         }
 
-        #canva {
-            max-width: 800px;
+        #canva,
+        .share_cnt_div {
+            max-width: 600px;
             width: 95%;
+            text-align: right;
 
+        }
+
+        #share_cnt_span {
+            font-size: 1em;
+            color: yellow;
+            font-weight: bold;
+            background: red;
+            padding: 2px 5px;
+            border-radius: 10px 10px 0 0;
+            display: none;
+        }
+
+        #share_btn,
+        #share_lnk_btn,
+        #share_image_btn {
+            width: 30%;
+            max-width: 200px;
         }
     </style>
 
@@ -73,11 +119,17 @@
 
 <body>
     <center>
-        <div style="margin:10px"><span class="h1_share">Share</span> <span class="h1_kural">குறள்</span> </div>
+        <div id="info">
+            <span>Developed by : </span> <span id="dev_name"> Agilan</span>
+            <a href="https://agilan-pro.web.app/"><img alt="Website" src="link.png"></a>
+            <a href="https://github.com/agilan2001"><img alt="GitHub" src="github-icon-png-29.jpg"></a>
+        </div>
+
+        <div style="margin-bottom: 5px;"><span class="h1_share">Share</span> <span class="h1_kural">குறள்</span> </div>
         <input id="kural_no_txt" placeholder="Kural No." type="number"
             onchange="if((q = (parseInt(kural_no_txt.value)-1))>=0 && q<1330) fill_kural(q)" />
         <br>
-        OR
+        or
         <br>
         <div class="dropdown">
             <input placeholder="Search..." oninput="search_input()" type="text" id="search_txt"
@@ -88,20 +140,100 @@
         </div>
         <br>
 
+        <div class="share_cnt_div"><span id="share_cnt_span">25 shares</span></div>
+
         <canvas id="canva" height="900" width="1330"></canvas>
         <br>
-        <input style="margin:10px; display: block;" class="btn btn-primary" id="share_btn" type="button"
-            value="SHARE IMAGE" onclick="share()">
-        <input style="margin:10px; display: block;" class="btn btn-warning" type="button" value="DOWNLOAD IMAGE"
-            onclick="download()">
-        <input style="margin:10px; display: block;" class="btn btn-info" id="share_lnk_btn" type="button"
-            value="SHARE LINK" onclick="share_lnk()">
+        <button class="btn btn-primary" id="share_btn" type="button" onclick="share()">SHARE<br>IMAGE</button>
+        <button class="btn btn-warning" id="share_image_btn" onclick="download()">DOWNLOAD<br>IMAGE</button>
+        <button class="btn btn-info" id="share_lnk_btn" type="button" onclick="share_lnk()">SHARE<br>LINK</button>
+        <input style="margin:10px;margin-top:30px; display: block;" class="btn btn-danger btn-lg" type="button"
+            value="POPULAR SHARES" onclick="top_shares()">
         <img src="thiruvalluvar.png" id="image" style="display: none;">
         <img src="olai2.png" id="olai_image" style="display: none;">
         <input type="text" id="copy" style="display: none;">
+
+        <!-- Modal -->
+        <div class="modal fade" id="popularSharesModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Popular Shares</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">KURAL</th>
+                                    <th scope="col">Shares</th>
+                                </tr>
+                            </thead>
+                            <tbody id="popular_shares_cont">
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">3</th>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">4</th>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">5</th>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </center>
 </body>
 <script src="./thirukkural.js"></script>
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
+
+<script>
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    var firebaseConfig = {
+        apiKey: "AIzaSyAz7ntyy2tUbzUK5g9kADwOnbceejh6CsU",
+        authDomain: "share-kural.firebaseapp.com",
+        databaseURL: "https://share-kural-default-rtdb.firebaseio.com",
+        projectId: "share-kural",
+        storageBucket: "share-kural.appspot.com",
+        messagingSenderId: "320843254946",
+        appId: "1:320843254946:web:c0dc6e066899e93e4cdbfb",
+        measurementId: "G-04YNCNY0S1"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+</script>
 
 <script>
 
@@ -147,6 +279,9 @@
 
         kural_no_txt.value = cur_kural;
 
+        share_cnt_span.style.display = "none";
+        show_share_cnt();
+
         canva.width = 1330
         canva.height = 900
 
@@ -170,7 +305,7 @@
         ctx.fillStyle = "red"
         ctx.textAlign = "left"
         var k1_txt = "அதிகாரம் : " + chap_tam[parseInt(n / 10)];
-        var k1 = ctx.measureText(k1_txt).fontBoundingBoxAscent + 30;
+        var k1 = ctx.measureText(k1_txt).actualBoundingBoxAscent + 45;
 
         ctx.fillText(k1_txt, left + 10, k1, 700);
 
@@ -182,8 +317,8 @@
         ctx.font = "bold 42px Mukta Malar";
         var l1 = tk.kural[n].line1;
         var l2 = tk.kural[n].line2;
-        var m1 = ctx.measureText(l1).fontBoundingBoxAscent + 60 + k1;
-        var m2 = ctx.measureText(l2).fontBoundingBoxAscent + 10 + m1;
+        var m1 = ctx.measureText(l1).actualBoundingBoxAscent + 75 + k1;
+        var m2 = ctx.measureText(l2).actualBoundingBoxAscent + 25 + m1;
 
         var l1_w = 915;
         ctx.drawImage(document.getElementById("olai_image"), left, k1 + 30, l1_w + 160, m2 - k1 + 80);
@@ -220,7 +355,7 @@
 
         var j = m2 + 100;
         tam_exp_line.forEach((e, ind) => {
-            j = ctx.measureText(e).fontBoundingBoxAscent + 10 + j;
+            j = ctx.measureText(e).fontBoundingBoxAscent + 15 + j;
             ctx.fillText(e, 50, j);
         })
 
@@ -243,6 +378,37 @@
 
     }
 
+
+
+    function search_input() {
+
+        var search = search_txt.value.toLowerCase();
+        if (!search) {
+            search_list.innerHTML = "";
+            return;
+        }
+        //var kural_filter = tk.kural.filter((e, i) => e.line1.indexOf(search) > -1 || e.line2.indexOf(search) > -1 || e.translit.toLowerCase().indexOf(search) > -1);
+
+        var kural_filter = [];
+        var kural_filter_i = [];
+        tk.kural.forEach((e, i) => {
+            if (e.line1.indexOf(search) > -1 || e.line2.indexOf(search) > -1 || e.translit.toLowerCase().indexOf(search) > -1) {
+                var splt = e.line1.split(" ");
+                kural_filter.push(splt[0] + " " + splt[1] + "...");
+                kural_filter_i.push(i);
+            }
+        })
+
+        var inn_htm = "";
+
+        kural_filter.forEach((e, i) => {
+            inn_htm += `<li><a class="dropdown-item" href="#" onclick=fill_kural(${kural_filter_i[i]})>${e}</a></li>`
+        })
+
+        search_list.innerHTML = inn_htm;
+    }
+
+
     function share() {
 
         var blob = canva.toBlob((blob) => {
@@ -253,6 +419,9 @@
             }
             )
         })
+
+        db_inc();
+
     }
 
 
@@ -270,34 +439,8 @@
         a.addEventListener('click', clickHandler, false);
         a.click();
 
-    }
+        db_inc();
 
-    function search_input() {
-
-        var search = search_txt.value.toLowerCase();
-        if (!search) {
-            search_list.innerHTML = "";
-            return;
-        }
-        //var kural_filter = tk.kural.filter((e, i) => e.line1.indexOf(search) > -1 || e.line2.indexOf(search) > -1 || e.translit.toLowerCase().indexOf(search) > -1);
-
-        var kural_filter = [];
-        var kural_filter_i = [];
-        tk.kural.forEach((e, i) => {
-            if (e.line1.indexOf(search) > -1 || e.line2.indexOf(search) > -1 || e.translit.toLowerCase().indexOf(search) > -1) {
-                var splt = e.line1.split(" ");
-                kural_filter.push(splt[0] + splt[1] + "...");
-                kural_filter_i.push(i);
-            }
-        })
-
-        var inn_htm = "";
-
-        kural_filter.forEach((e, i) => {
-            inn_htm += `<li><a class="dropdown-item" href="#" onclick=fill_kural(${kural_filter_i[i]})>${e}</a></li>`
-        })
-
-        search_list.innerHTML = inn_htm;
     }
 
     function share_lnk() {
@@ -321,6 +464,88 @@
             alert("URL Copied to Clipboard");
             share_lnk_btn.focus();
         }
+
+        db_inc();
+
+    }
+
+    async function db_inc() {
+
+        var out;
+        await firebase.database().ref("cnt/" + cur_kural).transaction(
+            (data) => {
+                out = data + 1;
+                return out;
+            });
+
+        share_cnt_span.innerHTML = out + " shares";
+    }
+
+    async function show_share_cnt() {
+
+        snap = await firebase.database().ref("cnt/" + cur_kural).once("value");
+        var cnt = parseInt(snap.val());
+        if (cnt > 0) {
+            share_cnt_span.innerHTML = cnt + " shares";
+            share_cnt_span.style.display = "inline";
+        }
+
+    }
+
+    async function top_shares() {
+
+        var k_ar = [];
+        var v_ar = [];
+        firebase.database().ref("cnt/").orderByValue().limitToLast(5).once("value", (snap) => {
+            var v = snap.val();
+            for (x in v) {
+                k_ar.push(parseInt(x));
+                v_ar.push(parseInt(v[x]));
+            }
+            for (i = 0; i < v_ar.length - 1; i++) {
+                for (j = i + 1; j < v_ar.length; j++) {
+                    if (v_ar[i] < v_ar[j]) {
+                        temp = v_ar[i];
+                        v_ar[i] = v_ar[j];
+                        v_ar[j] = temp;
+
+                        temp = k_ar[i];
+                        k_ar[i] = k_ar[j];
+                        k_ar[j] = temp;
+                    }
+                }
+            }
+            console.log(k_ar, v_ar);
+
+            var shares_modal = new bootstrap.Modal(document.getElementById("popularSharesModal"));
+            var tk_ar = [];
+
+            var tr_ar = popular_shares_cont.getElementsByTagName("tr");
+            k_ar.forEach((e, i) => {
+                var splt = tk.kural[e - 1].line1.split(" ");
+                tk_ar.push(splt[0] + " " + splt[1] + "...");
+                tr_ar[i].addEventListener("click", () => {
+                    fill_kural(e - 1);
+                    shares_modal.hide();
+                });
+
+            })
+            var td_ar = popular_shares_cont.getElementsByTagName("td");
+            var th_ar = popular_shares_cont.getElementsByTagName("th");
+            for (i = 0; i < 10; i++) {
+                e = td_ar[i];
+                if (i % 2) {
+                    e.innerHTML = v_ar[parseInt(i / 2)];
+                } else {
+                    e.innerHTML = tk_ar[parseInt(i / 2)];
+                    th_ar[parseInt(i / 2)].innerHTML = k_ar[parseInt(i / 2)];
+                }
+            }
+
+            shares_modal.show();
+
+
+        })
 
     }
 
