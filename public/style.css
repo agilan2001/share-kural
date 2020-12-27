@@ -1,0 +1,92 @@
+body {
+    background: linear-gradient(90deg, green, lightgreen 50%, green);
+}
+
+#info {
+    color: white;
+    font-size: 20px;
+    align-items: center;
+    justify-content: center;
+    background: darkred;
+    padding: 0 5px;
+    position: sticky;
+    top: 0;
+    width: 100%;
+}
+
+#dev_name {
+    color: greenyellow;
+    margin: 10px;
+    font-weight: bold;
+}
+
+#info img {
+    height: 20px;
+    margin: 5px;
+}
+
+#info img:hover {
+    box-shadow: 2px 2px white;
+}
+
+.h1_share, .h1_kural {
+    font-size: 2.5em;
+    font-weight: bold;
+}
+
+.h1_kural {
+    color: blue;
+}
+
+.h1_share {
+    color: red;
+}
+
+#kural_no_txt {
+    text-align: center;
+    font-size: 1.5em;
+    width: 6ch;
+    border: 2px solid blue;
+}
+
+#search_txt {
+    border: 2px solid red;
+}
+
+#kural_no_txt, #search_txt {
+    border-radius: 5px;
+}
+
+#kural_no_txt::placeholder {
+    font-size: 15px;
+}
+
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+#canva, .share_cnt_div {
+    max-width: 600px;
+    width: 95%;
+    text-align: right;
+}
+
+#share_cnt_span {
+    font-size: 1em;
+    color: yellow;
+    font-weight: bold;
+    background: red;
+    padding: 2px 5px;
+    border-radius: 10px 10px 0 0;
+    display: none;
+}
+
+#share_btn, #share_lnk_btn, #share_image_btn {
+    width: 30%;
+    max-width: 200px;
+}
