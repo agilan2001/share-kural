@@ -1,4 +1,7 @@
 # share-kural
 ## Web App to search and share Thirukkural as PNG images
-(Under Develpoment)
-## https://share-kural.web.app
+>## https://share-kural.web.app
+
+
+<img src="/screen1.png" width=200 style="margin:15px">
+<img src="/screen2.png" width=200 style="margin:15px">
