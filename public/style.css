@@ -90,3 +90,20 @@ input[type=number] {
     width: 30%;
     max-width: 200px;
 }
+
+#chap_txt {
+    position: sticky;
+    top: -10px;
+    background: white;
+    z-index: 10;
+}
+
+#chap_list>li>hr {
+    margin: 2px 0;
+}
+
+#cur_chap_txt {
+    width: 40ch;
+    font-size: 0.8em;
+    margin: 4px;
+}

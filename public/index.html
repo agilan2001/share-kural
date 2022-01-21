@@ -40,12 +40,26 @@
         or
         <br>
         <div class="dropdown">
-            <input placeholder="Search..." oninput="search_input()" type="text" id="search_txt" autocomplete="off"
+            <input id="cur_chap_txt" data-bs-toggle="dropdown" value="அனைத்து அதிகாரங்கள் | ALL Chapters" readonly onmousedown="cur_chap_txt_click();">
+            <ul class="dropdown-menu"  style="max-height: 300px; max-width: 250px; overflow: hidden auto;">
+                <input class="dropdown-item" placeholder="Search Chapter" oninput="search_chap()" type="text" id="chap_txt" autocomplete="off">
+                <div id="chap_list">
+                    <li class="dropdown-item">               
+                        <div>அனைத்து அதிகாரங்கள்</div> 
+                        <div>ALL Chapters</div>
+                        <hr>
+                    </li>
+                </div>
+            </ul>
+        </div>
+        <div class="dropdown">
+            <input placeholder="Search Kural" onmousedown="search_input()" oninput="search_input()" type="text" id="search_txt" autocomplete="off"
                 data-bs-toggle="dropdown">
             <ul class="dropdown-menu" id="search_list" style="max-height: 300px; max-width: 250px; overflow: auto;">
 
             </ul>
         </div>
+        
         <br>
 
         <div class="share_cnt_div"><span id="share_cnt_span">25 shares</span></div>
