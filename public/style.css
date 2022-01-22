@@ -101,4 +101,6 @@ input[type=number] {
     width: 40ch;
     font-size: 0.8em;
     margin: 4px;
+    border: 1px solid;
+    border-radius: 4px;
 }

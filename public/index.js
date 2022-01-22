@@ -310,12 +310,14 @@ var swiper;
 
 function kural_no_txt_change(){
     if((q = (parseInt(kural_no_txt.value)-1))>=0 && q<1330) {
-        swiper.destroy();
+        // swiper.destroy();
         fill_kural(q);
     }
 }
 
 function fill_kural(n, adjust=false){
+
+    if(swiper) swiper.destroy();
 
     if(n==0){
         fill_kural(1,true)
@@ -326,6 +328,10 @@ function fill_kural(n, adjust=false){
     }
 
     cur_kural = parseInt(n) + 1;
+    if(cur_chap != -1){
+        cur_chap = parseInt((cur_kural-1)/10);
+        cur_chap_txt.value =  `${chap_tam[cur_chap]} | ${chap_eng[cur_chap]}`;
+    }
     kural_no_txt.value = cur_kural;
 
     if(n==0 || n==1329){
@@ -354,7 +360,7 @@ function fill_kural(n, adjust=false){
         setTimeout(()=>{
 
             var dir = swiper.activeIndex;
-            swiper.destroy();
+            
 
             if(cur_kural == 1){
                 fill_kural(1)
@@ -556,18 +562,17 @@ function search_chap() {
     }
 
     chap_list.innerHTML = inn_htm;
-
-    chap_txt.focus();
 }
 
 function set_chap(chap_no){
     cur_chap = chap_no;
     cur_chap_txt.value = chap_no==-1 ? "அனைத்து அதிகாரங்கள் | ALL Chapters" : `${chap_tam[chap_no]} | ${chap_eng[chap_no]}`;
+    if(chap_no!=-1) fill_kural(chap_no*10);
 }
 
 function share() {
 
-    var blob = canva.toBlob((blob) => {
+    var blob = canva1.toBlob((blob) => {
         navigator.share({
             files: [new File([blob], "kural-" + kural_no_txt.value + ".png", { type: blob.type })],
             text: "https://share-kural.web.app/?kural=" + cur_kural,
@@ -584,7 +589,7 @@ function share() {
 function download() {
 
     const a = document.createElement('a');
-    a.href = canva.toDataURL("image/png");
+    a.href = canva1.toDataURL("image/png");
     a.download = "kural-" + cur_kural + ".png";
 
     const clickHandler = () => {
