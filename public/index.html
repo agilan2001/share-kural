@@ -12,6 +12,13 @@
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
         crossorigin="anonymous"></script>
 
+    <!-- Swiper JS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/swiper/swiper-bundle.min.css"
+    />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
 
     <link href="style.css" rel="stylesheet">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -35,7 +42,7 @@
 
         <div style="margin-bottom: 5px;"><span class="h1_share">Share</span> <span class="h1_kural">குறள்</span> </div>
         <input id="kural_no_txt" placeholder="Kural No." type="number"
-            onchange="if((q = (parseInt(kural_no_txt.value)-1))>=0 && q<1330) fill_kural(q)" />
+            onchange="kural_no_txt_change()" />
         <br>
         or
         <br>
@@ -62,9 +69,23 @@
         
         <br>
 
-        <div class="share_cnt_div"><span id="share_cnt_span">25 shares</span></div>
+        
+        <div class="share_cnt_div mb-1">
+        <span id="share_cnt_span" class="badge bg-danger">25 shares</span>
+        </div>
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide"><canvas class="canva" id="canva0" height="900" width="1330"></canvas></div>
+              <div class="swiper-slide">
+                <canvas class="canva" id="canva1" height="900" width="1330"></canvas>
+              </div>
+              <div class="swiper-slide"><canvas class="canva" id="canva2" height="900" width="1330"></canvas></div>
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
 
-        <canvas id="canva" height="900" width="1330"></canvas>
+        
         <br>
         <button class="btn btn-primary" id="share_btn" type="button" onclick="share()">SHARE<br>IMAGE</button>
         <button class="btn btn-warning" id="share_image_btn" onclick="download()">DOWNLOAD<br>IMAGE</button>

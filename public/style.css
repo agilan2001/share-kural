@@ -70,20 +70,15 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
-#canva, .share_cnt_div {
+.canva, .share_cnt_div {
     max-width: 600px;
     width: 95%;
     text-align: right;
 }
 
 #share_cnt_span {
-    font-size: 1em;
-    color: yellow;
-    font-weight: bold;
-    background: red;
-    padding: 2px 5px;
-    border-radius: 10px 10px 0 0;
-    display: none;
+    opacity: 0;
+    transition: all 0.5s;
 }
 
 #share_btn, #share_lnk_btn, #share_image_btn {

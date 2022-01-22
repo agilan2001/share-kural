@@ -1,5 +1,5 @@
 
-var ctx = document.getElementById("canva").getContext('2d');
+
 
 var chap_tam = ["கடவுள் வாழ்த்து", "வான்சிறப்பு", "நீத்தார் பெருமை", "அறன் வலியுறுத்தல்", "இல்வாழ்க்கை", "வாழ்க்கைத் துணைநலம்", "மக்கட்பேறு", "அன்புடைமை", "விருந்தோம்பல்", "இனியவை கூறல்", "செய்ந்நன்றியறிதல்", "நடுவு நிலைமை", "அடக்கம் உடைமை", "ஒழுக்கம் உடைமை", "பிறனில் விழையாமை", "பொறையுடைமை", "அழுக்காறாமை", "வெஃகாமை", "புறங்கூறாமை", "பயனில சொல்லாமை", "தீவினையச்சம்", "ஒப்புரவறிதல்", "ஈகை", "புகழ்", "அருளுடைமை", "புலால் மறுத்தல்", "தவம்", "கூடா ஒழுக்கம்", "கள்ளாமை", "வாய்மை", "வெகுளாமை", "இன்னா செய்யாமை", "கொல்லாமை", "நிலையாமை", "துறவு", "மெய்யுணர்தல்", "அவா அறுத்தல்", "ஊழ்", "இறைமாட்சி", "கல்வி", "கல்லாமை", "கேள்வி", "அறிவுடைமை", "குற்றங்கடிதல்", "பெரியாரைத் துணைக்கோடல்", "சிற்றினம் சேராமை", "தெரிந்து செயல்வகை", "வலியறிதல்", "காலமறிதல்", "இடனறிதல்", "தெரிந்து தெளிதல்", "தெரிந்து வினையாடல்", "சுற்றந் தழால்", "பொச்சாவாமை", "செங்கோன்மை", "கொடுங்கோன்மை", "வெருவந்த செய்யாமை", "கண்ணோட்டம்", "ஒற்றாடல்", "ஊக்கம் உடைமை", "மடி இன்மை", "ஆள்வினை உடைமை", "இடுக்கண் அழியாமை", "அமைச்சு", "சொல்வன்மை", "வினைத் தூய்மை", "வினைத்திட்பம்", "வினை செயல்வகை", "தூது", "மன்னரைச் சேர்ந்து ஒழுகல்", "குறிப்பறிதல்", "அவை அறிதல்", "அவை அஞ்சாமை", "நாடு", "அரண்", "பொருள் செயல்வகை", "படை மாட்சி", "படைச் செருக்கு", "நட்பு", "நட்பாராய்தல்", "பழைமை", "தீ நட்பு", "கூடா நட்பு", "பேதைமை", "புல்லறிவாண்மை", "இகல்", "பகை மாட்சி", "பகைத்திறம் தெரிதல்", "உட்பகை", "பெரியாரைப் பிழையாமை", "பெண்வழிச் சேறல்", "வரைவின் மகளிர்", "கள்ளுண்ணாமை", "சூது", "மருந்து", "குடிமை", "மானம்", "பெருமை", "சான்றாண்மை", "பண்புடைமை", "நன்றியில் செல்வம்", "நாணுடைமை", "குடிசெயல் வகை", "உழவு", "நல்குரவு", "இரவு", "இரவச்சம்", "கயமை", "தகை அணங்குறுத்தல்", "குறிப்பறிதல்", "புணர்ச்சி மகிழ்தல்", "நலம் புனைந்து உரைத்தல்", "காதற் சிறப்புரைத்தல்", "நாணுத் துறவுரைத்தல்", "அலர் அறிவுறுத்தல்", "பிரிவு ஆற்றாமை", "படர்மெலிந் திரங்கல்", "கண் விதுப்பழிதல்", "பசப்புறு பருவரல்", "தனிப்படர் மிகுதி", "நினைந்தவர் புலம்பல்", "கனவுநிலை உரைத்தல்", "பொழுதுகண்டு இரங்கல்", "உறுப்புநலன் அழிதல்", "நெஞ்சொடு கிளத்தல்", "நிறையழிதல்", "அவர்வயின் விதும்பல்", "குறிப்பறிவுறுத்தல்", "புணர்ச்சி விதும்பல்", "நெஞ்சொடு புலத்தல்", "புலவி", "புலவி நுணுக்கம்", "ஊடலுவகை"]
 var chap_eng = [
@@ -274,6 +274,7 @@ var chap_eng_translit = [
     "Ootaluvakai"
 ]
 
+
 var cur_kural;
 var cur_chap = -1;
 
@@ -290,24 +291,106 @@ pre_fill();
 
 // Check for Kural Number in the URL or else use a random number from 1 to 1330
 var kur_share = parseInt(url.get("kural")) - 1;
-setTimeout(fill_kural, 500, [kur_share >= 0 && kur_share < 1330 ? kur_share : parseInt(Math.random() * 1330 + 1)]);
+setTimeout(fill_kural, 500, (kur_share >= 0 && kur_share < 1330 )? kur_share : parseInt(Math.random() * 1330 + 1));
 
 
 function pre_fill() {
 
-    ctx.font = "bold 1px Mukta Malar";
-    ctx.fillStyle = "white"
-    ctx.fillText("தமிழ் திருக்குறள் ", 0, 100);
+    [0,1,2].forEach((i)=>{
+        var canva = document.getElementById("canva"+i);
+        var ctx = canva.getContext('2d');
+        ctx.font = "bold 1px Mukta Malar";
+        ctx.fillStyle = "white"
+        ctx.fillText("தமிழ் திருக்குறள் ", 0, 100);
+    })
 
 }
 
-function fill_kural(n) {
+var swiper;
+
+function kural_no_txt_change(){
+    if((q = (parseInt(kural_no_txt.value)-1))>=0 && q<1330) {
+        swiper.destroy();
+        fill_kural(q);
+    }
+}
+
+function fill_kural(n, adjust=false){
+
+    if(n==0){
+        fill_kural(1,true)
+    }
+
+    if(n==1329){
+        fill_kural(1328,true)
+    }
 
     cur_kural = parseInt(n) + 1;
-
     kural_no_txt.value = cur_kural;
 
-    share_cnt_span.style.display = "none";
+    if(n==0 || n==1329){
+        show_share_cnt();
+        return;
+    }
+        
+
+
+    fill_kural_i(n-1, 0)
+    fill_kural_i(n, 1)
+    fill_kural_i(n+1, 2)
+
+    swiper = new Swiper(".mySwiper", {
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev"
+        },
+        initialSlide:adjust?(n==1?0:2):1
+      });
+    
+      swiper.on('slideChange',function(){
+
+        console.log(swiper.activeIndex)
+
+        setTimeout(()=>{
+
+            var dir = swiper.activeIndex;
+            swiper.destroy();
+
+            if(cur_kural == 1){
+                fill_kural(1)
+                return;
+            }
+
+            if(cur_kural == 1330){
+                fill_kural(1328)
+                return;
+            }
+            
+            if(dir == 0){
+                fill_kural(cur_kural-2)
+            }
+            else if(dir == 2){
+                fill_kural(cur_kural)
+            }
+        
+
+            
+
+        },100)
+          
+          
+      })
+    
+}
+
+function fill_kural_i(n, i) {
+
+    var canva = document.getElementById("canva"+i);
+    var ctx = canva.getContext('2d');
+
+    
+
+    share_cnt_span.style.opacity = 0;
     show_share_cnt();
 
     canva.width = 1330
@@ -548,7 +631,7 @@ async function show_share_cnt() {
     var cnt = parseInt(snap.val());
     if (cnt > 0) {
         share_cnt_span.innerHTML = cnt + " shares";
-        share_cnt_span.style.display = "inline";
+        share_cnt_span.style.opacity = 1;
     }
 
 }
@@ -623,3 +706,5 @@ async function top_shares() {
     })
 
 }
+
+
